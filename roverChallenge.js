@@ -1,17 +1,12 @@
 const rover = (limits, startPosition, movements) => {
 
-    let abc = {
-        description: "First Rover",
-        limits: [5, 5],
-        roverStart: [1, 2, "N"],
-        roverMovements: 'LMLMLMLMM',
-        roverEnd: [1, 3, "N"]
-    }
     currentPostion = [...startPosition]
+    move = movements.split("")
 
     console.log("The rover is starting here:", currentPostion)
 
     const faceDirection = (rotation) => {
+        //could divide into left and right to reduce repitition
         console.log("this is rotation:", rotation, currentPostion[2])
  
         if (currentPostion[2] == "N" && rotation == 'R') {
@@ -19,7 +14,6 @@ const rover = (limits, startPosition, movements) => {
             console.log("Now current face is ", currentPostion[2])
             return;
         }
-
         if (currentPostion[2] == "N" && rotation == 'L') {
             currentPostion[2] = "W"
             console.log("Now current face is ", currentPostion[2])
@@ -55,9 +49,14 @@ const rover = (limits, startPosition, movements) => {
             return;
         }
     }
+    const validPostion = () => {
+        return currentPostion[0] <=limits[0] && currentPostion[1] <=limits[0]
+    }
     const moveRover = () => {
+        //check if out of bounds with each movemenent before return?
         if (currentPostion[2] == "N") {
             currentPostion[1] += 1
+            validPostion() ? console.log("valid") : console.log("wrong")
         }
         if (currentPostion[2] == "S") {
             currentPostion[1] -= 1
@@ -69,18 +68,11 @@ const rover = (limits, startPosition, movements) => {
             currentPostion[0] -= 1
         }
     }
-
-    move = movements.split("")
-    console.log(move)
-
+    
     move.forEach(letter => {
-
-        console.log("letter is:", letter)
-
         if (letter !== "M") {
             faceDirection(letter)
-        }
-        else moveRover()
+        } else moveRover()
         console.log("Now we are at", currentPostion)
     });
     return currentPostion
@@ -89,20 +81,17 @@ const rover = (limits, startPosition, movements) => {
 exports.rover = rover;
 
 /* To think about
-
-How to test the rover doesn't end outside the limits
-How to test the rover doesn't go out of limits during the movements
-Test for valid start position and valid end position?
+Test:
+rover doesn't end outside the limits
+rover doesn't go out of limits during the movements
+Test for valid start position and valid end position - numerical values
 take the movement string and traverse - different toBe values - toBe < or not more than limit CoOrds
 
+Qs
 
-How to represent rover, variable with coords
-As one moves we edit the array of coordinates and facing
-data structure for this?
+Strictly string input i.e array input for coord -> can chance
 
-functions to reflect face change, and position change?
-spread-string and go through sequentially face, then depending on face manip x or y. 
-Print after every step..? or every few?s
-return final co-ords
+Test
+
 
 */
