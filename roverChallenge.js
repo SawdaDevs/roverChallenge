@@ -1,5 +1,11 @@
 const rover = (limits, startPosition, movements) => {
-
+    console.log(`${limits}, ${startPosition}, ${movements}`)
+    limits = limits.split(',')
+    limits[0] = Number(limits[0])
+    limits[1]= Number(limits[1])
+    startPosition = startPosition.split(',')
+    startPosition[0] = Number(startPosition[0])
+    startPosition[1] = Number(startPosition[1])
     currentPostion = [...startPosition]
     move = movements.split("")
 
@@ -53,10 +59,10 @@ const rover = (limits, startPosition, movements) => {
         return (xCoOrd <=limits[0]) && (yCoOrd <=limits[0])
     }
     class OutOfBoundsError extends Error{
-        constructor(message) {s
-            super(message); // (1)
-            this.name = "OutOfBoundsError"; // (2)
-            this.message = message + ".This move is out Bounds"
+        constructor(message) {
+            super(message);
+            this.name = "OutOfBoundsError";
+            this.message = message + ".This move is out bounds"
         }
     }
     const moveRover = () => {
@@ -68,11 +74,11 @@ const rover = (limits, startPosition, movements) => {
 
         }
         if (currentPostion[2] == "E") {
-            validPostion(currentPostion[0]+1, currentPostion[1]) ? currentPostion[0] +=1 :  new OutOfBoundsError(`The rover attempted to move East to ${currentPostion[0]+1}, ${currentPostion[1]}`)
+            validPostion(currentPostion[0] +1, currentPostion[1]) ? currentPostion[0] +=1 :  new OutOfBoundsError(`The rover attempted to move East to ${currentPostion[0]+1}, ${currentPostion[1]}`)
 
         }
         if (currentPostion[2] == "W") {
-            validPostion(currentPostion[0]-1, currentPostion[1] ) ? currentPostion[0] -=1 :  new OutOfBoundsError(`The rover attempted to move West to ${currentPostion[0]-1}, ${currentPostion[1]}`)
+            validPostion(currentPostion[0] -1, currentPostion[1]) ? currentPostion[0] -=1 :  new OutOfBoundsError(`The rover attempted to move West to ${currentPostion[0]-1}, ${currentPostion[1]}`)
         }
     }
     
@@ -82,7 +88,7 @@ const rover = (limits, startPosition, movements) => {
         } else moveRover()
         console.log("Now we are at", currentPostion)
     });
-    return currentPostion
+    return currentPostion.toString()
 
 }
 exports.rover = rover;
