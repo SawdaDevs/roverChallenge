@@ -1,4 +1,5 @@
 const { rover } = require('./roverChallenge')
+
 tests = [
     {
         description:"First Rover",
@@ -14,6 +15,13 @@ tests = [
         roverMovements: 'MMRMMRMRRM',
         roverEnd:"5,1,E"
     },
+    {
+        description:"Third Rover",
+        limits: "5,5",
+        roverStart: "2,2,W",
+        roverMovements: 'MMMMMMMMMM',
+        roverEnd:""
+    },
 
 ]
 describe("testCases", ()=>{
@@ -23,6 +31,8 @@ describe("testCases", ()=>{
             expect(result).toStrictEqual(roverEnd)
         })
     })
+
+    expect().toThrow(Error)
 } )
 
 

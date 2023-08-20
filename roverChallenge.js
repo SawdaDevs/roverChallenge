@@ -1,16 +1,4 @@
 const rover = (limits, startPosition, movements) => {
-    console.log(`${limits}, ${startPosition}, ${movements}`)
-    limits = limits.split(',')
-    limits[0] = Number(limits[0])
-    limits[1]= Number(limits[1])
-    startPosition = startPosition.split(',')
-    startPosition[0] = Number(startPosition[0])
-    startPosition[1] = Number(startPosition[1])
-    currentPostion = [...startPosition]
-    move = movements.split("")
-
-    console.log("The rover is starting here:", currentPostion)
-
     const faceDirection = (rotation) => {
         //could divide into left and right to reduce repitition
         console.log("this is rotation:", rotation, currentPostion[2])
@@ -56,38 +44,58 @@ const rover = (limits, startPosition, movements) => {
         }
     }
     const validPostion = (xCoOrd, yCoOrd) => {
-        return (xCoOrd <=limits[0]) && (yCoOrd <=limits[0])
+        return (xCoOrd <=limits[0]) && (yCoOrd <=limits[0]) && (xCoOrd>=0) && (yCoOrd >=0)
     }
-    class OutOfBoundsError extends Error{
+    const cleanUpLimits = (limits) =>{
+        limits = limits.split(',')
+        limits[0] = Number(limits[0])
+        limits[1]= Number(limits[1])
+        return limits
+    }
+    const cleanUpStartPosition = (startPosition) =>{
+        startPosition = startPosition.split(',')
+        startPosition[0] = Number(startPosition[0])
+        startPosition[1] = Number(startPosition[1])
+        return [...startPosition]
+    }
+    const moveRover = () => {
+        if (currentPostion[2] == "N") {
+            validPostion(currentPostion[0], currentPostion[1] +1 ) ? currentPostion[1] +=1 : newError("North",currentPostion[0], (currentPostion[1]+1))
+        }
+        if (currentPostion[2] == "S") {
+            validPostion(currentPostion[0], currentPostion[1] -1 ) ? currentPostion[1] -=1 :  newError("South",currentPostion[0], (currentPostion[1]-1))
+        }
+        if (currentPostion[2] == "E") {
+            validPostion(currentPostion[0] +1, currentPostion[1]) ? currentPostion[0] +=1 : newError("East",currentPostion[0]+1, currentPostion[1])
+        }
+        if (currentPostion[2] == "W") {
+            console.log(validPostion(currentPostion[0] -1, currentPostion[1]))
+            validPostion(currentPostion[0] -1, currentPostion[1]) ? currentPostion[0] -=1 : newError("West",currentPostion[0]-1, currentPostion[1])
+        }
+    }
+    class OutOfBoundsError extends Error {
         constructor(message) {
             super(message);
             this.name = "OutOfBoundsError";
             this.message = message + ".This move is out bounds"
         }
     }
-    const moveRover = () => {
-        if (currentPostion[2] == "N") {
-            validPostion(currentPostion[0], currentPostion[1] +1 ) ? currentPostion[1] +=1 :  new OutOfBoundsError(`The rover attempted to move North to ${currentPostion[0]}, ${currentPostion[1]+1}`)
-        }
-        if (currentPostion[2] == "S") {
-            validPostion(currentPostion[0], currentPostion[1] -1 ) ? currentPostion[1] -=1 :  new OutOfBoundsError(`The rover attempted to move South to ${currentPostion[0]}, ${currentPostion[1]+1}`)
-
-        }
-        if (currentPostion[2] == "E") {
-            validPostion(currentPostion[0] +1, currentPostion[1]) ? currentPostion[0] +=1 :  new OutOfBoundsError(`The rover attempted to move East to ${currentPostion[0]+1}, ${currentPostion[1]}`)
-
-        }
-        if (currentPostion[2] == "W") {
-            validPostion(currentPostion[0] -1, currentPostion[1]) ? currentPostion[0] -=1 :  new OutOfBoundsError(`The rover attempted to move West to ${currentPostion[0]-1}, ${currentPostion[1]}`)
-        }
+    const newError = (direction,xCoOrd, yCoOrd) =>{
+        throw new OutOfBoundsError(`The rover attempted to move ${direction} to ${xCoOrd}, ${yCoOrd}`)
     }
     
+    console.log(`${limits}, ${startPosition}, ${movements}`)
+    limits = cleanUpLimits(limits)
+    currentPostion = cleanUpStartPosition(startPosition)
+    move = movements.split("")
+    console.log("The rover is starting here:", currentPostion)
     move.forEach(letter => {
         if (letter !== "M") {
             faceDirection(letter)
         } else moveRover()
         console.log("Now we are at", currentPostion)
     });
+    console.log("the rover is ending at position:" ,currentPostion)
     return currentPostion.toString()
 
 }
