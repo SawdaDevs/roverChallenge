@@ -49,23 +49,30 @@ const rover = (limits, startPosition, movements) => {
             return;
         }
     }
-    const validPostion = () => {
-        return currentPostion[0] <=limits[0] && currentPostion[1] <=limits[0]
+    const validPostion = (xCoOrd, yCoOrd) => {
+        return (xCoOrd <=limits[0]) && (yCoOrd <=limits[0])
+    }
+    class OutOfBoundsError extends Error{
+        constructor(message) {s
+            super(message); // (1)
+            this.name = "OutOfBoundsError"; // (2)
+            this.message = message + ".This move is out Bounds"
+        }
     }
     const moveRover = () => {
-        //check if out of bounds with each movemenent before return?
         if (currentPostion[2] == "N") {
-            currentPostion[1] += 1
-            validPostion() ? console.log("valid") : console.log("wrong")
+            validPostion(currentPostion[0], currentPostion[1] +1 ) ? currentPostion[1] +=1 :  new OutOfBoundsError(`The rover attempted to move North to ${currentPostion[0]}, ${currentPostion[1]+1}`)
         }
         if (currentPostion[2] == "S") {
-            currentPostion[1] -= 1
+            validPostion(currentPostion[0], currentPostion[1] -1 ) ? currentPostion[1] -=1 :  new OutOfBoundsError(`The rover attempted to move South to ${currentPostion[0]}, ${currentPostion[1]+1}`)
+
         }
         if (currentPostion[2] == "E") {
-            currentPostion[0] += 1
+            validPostion(currentPostion[0]+1, currentPostion[1]) ? currentPostion[0] +=1 :  new OutOfBoundsError(`The rover attempted to move East to ${currentPostion[0]+1}, ${currentPostion[1]}`)
+
         }
         if (currentPostion[2] == "W") {
-            currentPostion[0] -= 1
+            validPostion(currentPostion[0]-1, currentPostion[1] ) ? currentPostion[0] -=1 :  new OutOfBoundsError(`The rover attempted to move West to ${currentPostion[0]-1}, ${currentPostion[1]}`)
         }
     }
     
