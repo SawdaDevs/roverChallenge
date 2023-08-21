@@ -127,22 +127,14 @@ const rover = (limits, startPosition, movements) => {
     limits = cleanUpLimits(limits)
     currentPostion = cleanUpStartPosition(startPosition)
     move = cleanUpMovements(movements)
-    console.log("The rover is starting here:", currentPostion)
+    // console.log("The rover is starting here:", currentPostion)
     move.forEach(letter => {
         if (letter !== "M") {
             faceDirection(letter)
         } else moveRover()
-        console.log("Now we are at", currentPostion)
+        // console.log("Now we are at", currentPostion)
     });
-    console.log("The rover is ending at position:" ,currentPostion)
+    // console.log("The rover is ending at position:" ,currentPostion)
     return currentPostion.toString().replaceAll(',', ' ')
 }
 exports.rover = rover;
-
-/* To think about
-Test:
-rover doesn't end outside the limits
-
-
-
-*/
