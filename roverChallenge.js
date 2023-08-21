@@ -48,7 +48,7 @@ const rover = (limits, startPosition, movements) => {
     }
     const cleanUpLimits = (limits) =>{
         try {
-            limits = limits.split(',')
+            limits = limits.split(' ')
             limits[0] = Math.abs(Number(limits[0]))
             limits[1]= Math.abs(Number(limits[1]))
             if ((limits[0]|| limits[1]) == null || (limits[0]|| limits[1]) == undefined || limits[0]&& limits[1]==0) throw new InvalidLimitsError(limits)
@@ -60,7 +60,7 @@ const rover = (limits, startPosition, movements) => {
         }
     }
     const cleanUpStartPosition = (startPosition) =>{
-        startPosition = startPosition.split(',')
+        startPosition = startPosition.split(' ')
         startPosition[0] = Number(startPosition[0])
         startPosition[1] = Number(startPosition[1])
         return [...startPosition]
@@ -135,7 +135,7 @@ const rover = (limits, startPosition, movements) => {
         console.log("Now we are at", currentPostion)
     });
     console.log("The rover is ending at position:" ,currentPostion)
-    return currentPostion.toString()
+    return currentPostion.toString().replaceAll(',', ' ')
 }
 exports.rover = rover;
 
