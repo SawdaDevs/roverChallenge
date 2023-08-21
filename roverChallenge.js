@@ -49,8 +49,8 @@ const rover = (limits, startPosition, movements) => {
     const cleanUpLimits = (limits) =>{
         try {
             limits = limits.split(',')
-            limits[0] = Number(limits[0])
-            limits[1]= Number(limits[1])
+            limits[0] = abs(Number(limits[0]))
+            limits[1]= abs(Number(limits[1]))
             if ((limits[0]|| limits[1]) == null || (limits[0]|| limits[1]) == undefined || limits[0]&& limits[1]==0) throw new InvalidLimitsError(limits)
             return limits
         }
