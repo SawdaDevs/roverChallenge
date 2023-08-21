@@ -58,13 +58,25 @@ const rover = (limits, startPosition, movements) => {
             console.error()
             throw new InvalidLimitsError(limits)
         }
-
     }
     const cleanUpStartPosition = (startPosition) =>{
         startPosition = startPosition.split(',')
         startPosition[0] = Number(startPosition[0])
         startPosition[1] = Number(startPosition[1])
         return [...startPosition]
+    }
+    const cleanUpMovements = (movements)=>{
+        try{
+            const found = movements.toUpperCase().match(/[^LRM]/g)
+            if (found != null){
+            throw new InvalidMovementsError("Invalid characters in movement string")
+            }
+            return movements.toUpperCase().split("")
+        }
+        catch(error){
+            console.error()
+            throw new InvalidMovementsError("Problem with movements string")
+        }
     }
     const moveRover = () => {
         if (currentPostion[2] == "N") {
@@ -113,8 +125,8 @@ const rover = (limits, startPosition, movements) => {
         }
     }
     limits = cleanUpLimits(limits)
-    currentPostion = cleanUpStartPosition(startPosition) 
-    move = movements.split("")
+    currentPostion = cleanUpStartPosition(startPosition)
+    move = cleanUpMovements(movements)
     console.log("The rover is starting here:", currentPostion)
     move.forEach(letter => {
         if (letter !== "M") {
@@ -124,7 +136,6 @@ const rover = (limits, startPosition, movements) => {
     });
     console.log("The rover is ending at position:" ,currentPostion)
     return currentPostion.toString()
-
 }
 exports.rover = rover;
 
