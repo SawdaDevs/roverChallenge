@@ -47,10 +47,18 @@ const rover = (limits, startPosition, movements) => {
         return (xCoOrd <=limits[0]) && (yCoOrd <=limits[0]) && (xCoOrd>=0) && (yCoOrd >=0)
     }
     const cleanUpLimits = (limits) =>{
-        limits = limits.split(',')
-        limits[0] = Number(limits[0])
-        limits[1]= Number(limits[1])
-        return limits
+        try {
+            limits = limits.split(',')
+            limits[0] = Number(limits[0])
+            limits[1]= Number(limits[1])
+            if ((limits[0]|| limits[1]) == null || (limits[0]|| limits[1]) == undefined || limits[0]&& limits[1]==0) throw new InvalidLimitsError(limits)
+            return limits
+        }
+        catch(error) {
+            console.error()
+            throw new InvalidLimitsError(limits)
+        }
+
     }
     const cleanUpStartPosition = (startPosition) =>{
         startPosition = startPosition.split(',')
@@ -83,10 +91,29 @@ const rover = (limits, startPosition, movements) => {
     const newError = (direction,xCoOrd, yCoOrd) =>{
         throw new OutOfBoundsError(`The rover attempted to move ${direction} to ${xCoOrd}, ${yCoOrd}`)
     }
-    
-    console.log(`${limits}, ${startPosition}, ${movements}`)
+    class InvalidLimitsError extends Error{
+        constructor(message) {
+            super(message);
+            this.name = "InvalidLimitsError";
+            this.message = message + ".The limits/grid of the rover are invalid. Please ammend and try again."
+        }
+    }
+    class InvalidMovementsError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = "InvalidMovementsError";
+            this.message = message + ".Error with movement string. Please ammend and try again."
+        }
+    }
+    class IsEmptyError extends Error{
+        constructor(message) {
+            super(message);
+            this.name = "IsEmptyError";
+            this.message = message + "is empty!"
+        }
+    }
     limits = cleanUpLimits(limits)
-    currentPostion = cleanUpStartPosition(startPosition)
+    currentPostion = cleanUpStartPosition(startPosition) 
     move = movements.split("")
     console.log("The rover is starting here:", currentPostion)
     move.forEach(letter => {
@@ -95,7 +122,7 @@ const rover = (limits, startPosition, movements) => {
         } else moveRover()
         console.log("Now we are at", currentPostion)
     });
-    console.log("the rover is ending at position:" ,currentPostion)
+    console.log("The rover is ending at position:" ,currentPostion)
     return currentPostion.toString()
 
 }
@@ -104,15 +131,7 @@ exports.rover = rover;
 /* To think about
 Test:
 rover doesn't end outside the limits
-rover doesn't go out of limits during the movements
-Test for valid start position and valid end position - numerical values
-take the movement string and traverse - different toBe values - toBe < or not more than limit CoOrds
 
-Qs
-
-Strictly string input i.e array input for coord -> can chance
-
-Test
 
 
 */
