@@ -117,13 +117,6 @@ const rover = (limits, startPosition, movements) => {
             this.message = message + ".Error with movement string. Please ammend and try again."
         }
     }
-    class IsEmptyError extends Error{
-        constructor(message) {
-            super(message);
-            this.name = "IsEmptyError";
-            this.message = message + "is empty!"
-        }
-    }
     limits = cleanUpLimits(limits)
     currentPostion = cleanUpStartPosition(startPosition)
     move = cleanUpMovements(movements)
